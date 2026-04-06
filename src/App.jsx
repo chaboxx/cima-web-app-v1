@@ -1,4 +1,5 @@
 import { useDeferredValue, useEffect, useState } from 'react'
+import { useAuth } from 'react-oidc-context'
 import './App.css'
 import {
   allergiesOptions,
@@ -14,6 +15,7 @@ import {
   physicalExamFields,
   vitalFields,
 } from './cimaData'
+import { buildCognitoLogoutUrl } from './authConfig'
 
 const CIE_URL =
   'https://docs.google.com/spreadsheets/d/1ACNavgucrio_ZgUE_8Xi_2-5Q9KDTU91/export?format=csv&gid=1696766106'
@@ -96,6 +98,7 @@ function Section({ icon, title, children }) {
 }
 
 function App() {
+  const auth = useAuth()
   const [clock, setClock] = useState(currentClock())
   const [isLoading, setIsLoading] = useState(false)
   const [toast, setToast] = useState(null)
@@ -378,6 +381,51 @@ function App() {
     showToast('Formulario listo para integrarse con tu backend AWS')
   }
 
+  function handleSignOut() {
+    auth.removeUser()
+
+    const logoutUrl = buildCognitoLogoutUrl()
+    if (logoutUrl) {
+      window.location.href = logoutUrl
+    }
+  }
+
+  if (auth.isLoading) {
+    return <div className="auth-screen">Cargando autenticacion...</div>
+  }
+
+  if (auth.error) {
+    return (
+      <div className="auth-screen">
+        <div className="auth-card">
+          <h1>Error de autenticacion</h1>
+          <p>{auth.error.message}</p>
+          <button className="auth-button" onClick={() => auth.signinRedirect()}>
+            Reintentar inicio de sesion
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!auth.isAuthenticated) {
+    return (
+      <div className="auth-screen">
+        <div className="auth-card">
+          <div className="auth-kicker">CIMA</div>
+          <h1>Acceso para personal medico</h1>
+          <p>
+            Inicia sesion con Cognito para continuar al formulario clinico y
+            trabajar con tus permisos del sistema.
+          </p>
+          <button className="auth-button" onClick={() => auth.signinRedirect()}>
+            Iniciar sesion
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <header className="header">
@@ -390,7 +438,12 @@ function App() {
         </div>
         <div className="header-right">
           <div>{clock}</div>
-          <div className="header-status">React prototype</div>
+          <div className="header-status">
+            {auth.user?.profile.email || auth.user?.profile.preferred_username}
+          </div>
+          <button className="header-signout" onClick={handleSignOut}>
+            Cerrar sesion
+          </button>
         </div>
       </header>
 
