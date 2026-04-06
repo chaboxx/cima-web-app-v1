@@ -15,7 +15,7 @@ import {
   physicalExamFields,
   vitalFields,
 } from './cimaData'
-import { buildCognitoLogoutUrl } from './authConfig'
+import { buildCognitoLogoutUrl, clearOidcSessionStorage } from './authConfig'
 
 const CIE_URL =
   'https://docs.google.com/spreadsheets/d/1ACNavgucrio_ZgUE_8Xi_2-5Q9KDTU91/export?format=csv&gid=1696766106'
@@ -381,13 +381,22 @@ function App() {
     showToast('Formulario listo para integrarse con tu backend AWS')
   }
 
-  function handleSignOut() {
-    auth.removeUser()
-
+  async function handleSignOut() {
     const logoutUrl = buildCognitoLogoutUrl()
-    if (logoutUrl) {
-      window.location.href = logoutUrl
+
+    try {
+      await auth.removeUser()
+      clearOidcSessionStorage()
+    } catch {
+      clearOidcSessionStorage()
     }
+
+    if (logoutUrl) {
+      window.location.replace(logoutUrl)
+      return
+    }
+
+    window.location.replace('/')
   }
 
   if (auth.isLoading) {
@@ -441,7 +450,7 @@ function App() {
           <div className="header-status">
             {auth.user?.profile.email || auth.user?.profile.preferred_username}
           </div>
-          <button className="header-signout" onClick={handleSignOut}>
+          <button className="header-signout" type="button" onClick={handleSignOut}>
             Cerrar sesion
           </button>
         </div>

@@ -20,6 +20,28 @@ export const cognitoAuthConfig = {
   },
 }
 
+export function clearOidcSessionStorage(clientId = cognitoAuthConfig.client_id) {
+  const oidcPrefixes = [
+    `oidc.user:${cognitoAuthConfig.authority}:${clientId}`,
+    `oidc.${clientId}`,
+  ]
+
+  for (const storage of [window.localStorage, window.sessionStorage]) {
+    const keysToDelete = []
+
+    for (let index = 0; index < storage.length; index += 1) {
+      const key = storage.key(index)
+      if (!key) continue
+
+      if (oidcPrefixes.some((prefix) => key.startsWith(prefix))) {
+        keysToDelete.push(key)
+      }
+    }
+
+    keysToDelete.forEach((key) => storage.removeItem(key))
+  }
+}
+
 export function buildCognitoLogoutUrl() {
   if (!cognitoDomain) return null
 
