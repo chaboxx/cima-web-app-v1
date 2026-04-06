@@ -860,8 +860,10 @@ function App() {
                       key={`diagnosis-row-${index + 1}`}
                       className={activeDiagnosisRow === index ? 'active-row' : ''}
                     >
-                      <td className="row-num">{index + 1}</td>
-                      <td>
+                      <td className="row-num" data-label="#">
+                        {index + 1}
+                      </td>
+                      <td data-label="Tipo">
                         <select
                           className={`tipo-select ${diagnosis.type.toLowerCase()}`}
                           value={diagnosis.type}
@@ -876,7 +878,7 @@ function App() {
                           ))}
                         </select>
                       </td>
-                      <td>
+                      <td data-label="Código CIE-10">
                         <input
                           className="cie-cell-input"
                           type="text"
@@ -888,7 +890,7 @@ function App() {
                           maxLength={10}
                         />
                       </td>
-                      <td className="description-cell">
+                      <td className="description-cell" data-label="Descripción">
                         <input
                           className="desc-cell-input"
                           type="text"
@@ -899,7 +901,7 @@ function App() {
                           placeholder="Descripcion..."
                         />
                       </td>
-                      <td>
+                      <td data-label="Seleccionar CIE">
                         <button
                           className={`btn-select-cie ${
                             activeDiagnosisRow === index ? 'active' : ''
@@ -914,7 +916,7 @@ function App() {
                           ▶ CIE
                         </button>
                       </td>
-                      <td>
+                      <td data-label="Limpiar">
                         <button
                           className="btn-clear-row"
                           type="button"

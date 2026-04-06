@@ -29,6 +29,7 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 button,
@@ -246,6 +247,7 @@ textarea {
   padding: 32px 40px;
   max-width: 980px;
   width: 100%;
+  min-width: 0;
 }
 
 .section {
@@ -286,6 +288,7 @@ textarea {
 
 .section-body {
   padding: 24px;
+  min-width: 0;
 }
 
 .grid-2,
@@ -381,6 +384,7 @@ textarea {
   transition: all 0.15s;
   font-size: 13px;
   color: var(--text);
+  min-height: 40px;
 }
 
 .check-item:hover {
@@ -458,10 +462,12 @@ textarea {
 
 .table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .diag-table {
   width: 100%;
+  min-width: 860px;
   border-collapse: collapse;
   border-radius: 8px;
   overflow: hidden;
@@ -563,6 +569,11 @@ textarea {
   padding: 7px 10px;
   color: var(--text-3);
   cursor: pointer;
+}
+
+.btn-select-cie,
+.btn-clear-row {
+  min-height: 36px;
 }
 
 .submit-section {
@@ -709,11 +720,12 @@ textarea {
   .cie-panel {
     position: relative;
     top: 0;
-    height: 300px;
+    height: 280px;
   }
 
   .form-area {
     padding: 20px;
+    max-width: 100%;
   }
 
   .grid-2,
@@ -721,15 +733,43 @@ textarea {
   .vitals-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .section {
+    margin-bottom: 18px;
+  }
 }
 
 @media (max-width: 720px) {
   .header {
-    padding: 0 18px;
+    padding: 10px 18px;
+    min-height: 64px;
+    height: auto;
   }
 
   .header-right {
     display: none;
+  }
+
+  .logo {
+    gap: 10px;
+  }
+
+  .logo-name {
+    font-size: 20px;
+  }
+
+  .logo-sub {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  .layout {
+    min-height: auto;
+  }
+
+  .cie-panel {
+    height: auto;
+    max-height: 320px;
   }
 
   .grid-2,
@@ -740,6 +780,112 @@ textarea {
 
   .section-body {
     padding: 18px;
+  }
+
+  .section-header {
+    padding: 12px 16px;
+  }
+
+  .section-title {
+    font-size: 15px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 16px;
+  }
+
+  .check-group {
+    gap: 10px;
+  }
+
+  .check-item,
+  .check-item.otro-item {
+    width: 100%;
+    border-radius: 12px;
+    min-width: 0;
+  }
+
+  .vital-box {
+    padding: 10px;
+  }
+
+  .table-wrap {
+    overflow: visible;
+  }
+
+  .diag-table,
+  .diag-table thead,
+  .diag-table tbody,
+  .diag-table tr,
+  .diag-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .diag-table {
+    min-width: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .diag-table thead {
+    display: none;
+  }
+
+  .diag-table tbody {
+    display: grid;
+    gap: 12px;
+  }
+
+  .diag-table tbody tr {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .diag-table td {
+    padding: 0;
+    margin-top: 10px;
+  }
+
+  .diag-table td:first-child {
+    margin-top: 0;
+  }
+
+  .diag-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-2);
+  }
+
+  .row-num {
+    text-align: left;
+    font-size: 18px;
+    color: var(--accent);
+  }
+
+  .row-num::before {
+    color: var(--text-3);
+  }
+
+  .tipo-select,
+  .cie-cell-input,
+  .desc-cell-input,
+  .btn-select-cie,
+  .btn-clear-row {
+    width: 100%;
+  }
+
+  .description-cell {
+    min-width: 0;
   }
 
   .submit-section {
