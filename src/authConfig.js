@@ -42,10 +42,19 @@ export function clearOidcSessionStorage(clientId = cognitoAuthConfig.client_id) 
   }
 }
 
-export function buildCognitoLogoutUrl() {
+export function buildCognitoLogoutUrl({ redirectToLogin = false } = {}) {
   if (!cognitoDomain) return null
 
   const url = new URL('/logout', cognitoDomain)
+
+  if (redirectToLogin) {
+    url.searchParams.set('client_id', cognitoAuthConfig.client_id)
+    url.searchParams.set('response_type', cognitoAuthConfig.response_type)
+    url.searchParams.set('redirect_uri', cognitoAuthConfig.redirect_uri)
+    url.searchParams.set('scope', cognitoAuthConfig.scope)
+    return url.toString()
+  }
+
   url.searchParams.set('client_id', cognitoAuthConfig.client_id)
   url.searchParams.set('logout_uri', logoutUri)
   return url.toString()

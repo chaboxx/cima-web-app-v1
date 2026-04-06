@@ -382,7 +382,7 @@ function App() {
   }
 
   async function handleSignOut() {
-    const logoutUrl = buildCognitoLogoutUrl()
+    const logoutUrl = buildCognitoLogoutUrl({ redirectToLogin: true })
 
     try {
       await auth.removeUser()
