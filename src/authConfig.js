@@ -1,6 +1,6 @@
 const redirectUri =
   import.meta.env.VITE_COGNITO_REDIRECT_URI ||
-  'https://d84l1y8p4kdic.cloudfront.net'
+  'https://cima-web-app-v1.vercel.app/'
 
 const logoutUri = import.meta.env.VITE_COGNITO_LOGOUT_URI || redirectUri
 
